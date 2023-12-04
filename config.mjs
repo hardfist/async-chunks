@@ -13,11 +13,25 @@ if (!isRunningRspack && !isRunningWebpack) {
  * @type {import('webpack').Configuration | import('@rspack/cli').Configuration}
  */
 const config = {
-  mode: "development",
+  mode: "production",
   devtool: false,
+  context: path.resolve(__dirname,'src'),
   entry: {
-    main: "./src/index",
-  },
+		a: "./a.js",
+		b: {
+			import: "./b.js",
+			chunkLoading: false
+		},
+		c: {
+			import: "./b.js",
+			asyncChunks: false
+		},
+		d: {
+			import: "./b.js",
+			asyncChunks: false,
+			runtime: "runtime"
+		}
+	},
   plugins: [new HtmlWebpackPlugin()],
   output: {
     clean: true,
@@ -25,7 +39,9 @@ const config = {
       ? path.resolve(__dirname, "webpack-dist")
       : path.resolve(__dirname, "rspack-dist"),
     filename: "[name].js",
+    
   },
+  externals: ['fs'],
   experiments: {
     css: true,
   },
