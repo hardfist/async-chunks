@@ -14,8 +14,11 @@ if (!isRunningRspack && !isRunningWebpack) {
  */
 const config = {
   mode: "production",
-  devtool: false,
+  devtool:false,
   context: path.resolve(__dirname,'src'),
+  optimization: {
+    chunkIds: 'named'
+  },
   entry: {
 		a: "./a.js",
 		b: {
@@ -32,7 +35,6 @@ const config = {
 			runtime: "runtime"
 		}
 	},
-  plugins: [new HtmlWebpackPlugin()],
   output: {
     clean: true,
     path: isRunningWebpack
@@ -41,10 +43,13 @@ const config = {
     filename: "[name].js",
     
   },
-  externals: ['fs'],
-  experiments: {
-    css: true,
-  },
+  target: "web",
+	externals: {
+		fs: "commonjs fs"
+	},
+	node: {
+		__filename: false
+	}
 };
 
 export default config;
